@@ -1,7 +1,21 @@
-import java.util.List;
-import java.util.Map;
+AchievementTracker tracker = new AchievementTracker();
+RecentMistakesFirstSorter sorter = new RecentMistakesFirstSorter();
 
-public interface CardOrganizer {
-    List<Map.Entry<String, String>> sortCards(Map<String, String> flashcards, Map<String, Integer> mistakes);
+List<Map.Entry<String, String>> sortedCards = sorter.sortCards(flashcards, mistakes);
+
+for (int i = 0; i < repetitions; i++) {
+    for (Map.Entry<String, String> entry : sortedCards) {
+        String question = invertCards ? entry.getValue() : entry.getKey();
+        String answer = invertCards ? entry.getKey() : entry.getValue();
+
+        System.out.println("Асуулт: " + question);
+        String userAnswer = scanner.nextLine();
+        boolean isCorrect = userAnswer.equalsIgnoreCase(answer);
+
+        tracker.trackAnswer(question, isCorrect);
+        if (!isCorrect) {
+            mistakes.put(question, mistakes.getOrDefault(question, 0) + 1);
+        }
+    }
 }
-
+tracker.printAchievements();
